@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+  <head>
+
+      <title>Main Weather Display</title>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+      <link rel="stylesheet" href="weatherdw.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+      <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAbNgvs5_gjWmj9rm1XPsGFm9AMRXawEGw&sensor=true&libraries=places&language=en-US"></script>
+
+      <script src="forcast.js"></script>
+
+
+
+
+  </head>
+
+  <body onload="init()">
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Bucksnort Links</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="weatherdw.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <!-- Header with main title -->
+
+    <div class="jumbotron">
+      <h1 class="mainTitle">Bucksnort Weather</h1>
+
+      <div class="form-inline home">
+        <div class="form-group">
+          <label for="zip">Enter City or Zip:</label>
+          <input type="text" id="zip" placeholder="Enter city or zip..." value = "">
+        </div>
+        <div class="form-group">
+          <button id="submit" class="btn btn-sm btn-info" onclick = "codeAddress()">Submit</button>
+        </div>
+        <div class="form-group">
+          <label for="fromaddress">Start:</label>
+          <input type="text" id="fromaddress" placeholder="Enter address" size="25" />
+        </div>
+        <div class="form-group">
+          <label for="toaddress">End:</label>
+          <input type="text" id="toaddress" placeholder="Enter address" size="25" />
+        </div>
+        <div class="form-group">
+          <button id="fansbutton" class="btn btn-sm btn-info">Get Route</button>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-6 block1 centerTemp">
+
+      <table width="100%" height ="450px">
+        <col width="100">
+        <col width="200">
+        <col width="100">
+        <th>
+          <td  height="100px" id="addimage" class="weatherImage">
+          </td>
+        </th>
+        <tr>
+          <td height="280px" class="minTemp">
+            <section  id="lowTemp"></section>
+          </td>
+          <td height="280px" class="current">
+            <section  id="currentTemp"></section>
+          </td>
+          <td height="280px" class="maxTemp">
+            <section  id="highTemp"></section>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+<!-- Begin Fan's HTML Block -->
+    <div class = "col-md-6 block2 centerTemp">
+      <table>
+        <tr>
+          <td id="mapholder"></td>
+          <!--<td id="directionsPanel" style='display:none'></td> -->
+        </tr>
+      </table>
+    </div>
+<!-- End Fan's HTML Block -->
+
+<!-- Begin Daniel's HTML Block -->
+    <div class = "col-md-6 block3 ">
+      <div class="col-md-12">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="false">
+          <div class="carousel-inner" role="listbox">
+              <div class="item active">
+                <div class="col-md-12">
+                  <table class="table table-condensed">
+                    <tbody id="1st slide">
+                      <tr class="date1">
+                        <td></td>
+                      </tr>
+                      <tr class="hour1">
+                        <td></td>
+                      </tr>
+                      <tr class="temp1">
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="item">
+                  <div class="col-md-12">
+                    <table class="table table-condensed">
+                      <tbody id="2nd slide">
+                        <tr class="date2">
+                          <td></td>
+                        </tr>
+                        <tr class="hour2">
+                          <td></td>
+                        </tr>
+                        <tr class="temp2">
+                          <td></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+              </div>
+              <div class="item">
+                <div class="col-md-12">
+                  <table class="table table-condensed">
+                    <tbody id="3rd slide">
+                      <tr class="date3">
+                        <td></td>
+                      </tr>
+                      <tr class="hour3">
+                        <td></td>
+                      </tr>
+                      <tr class="temp3">
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
+              <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+              </a>
+              <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+              </a>
+        </div>
+            <div class="col-md-12">
+              <table class="table table-condensed">
+                <tbody id="dayforcast">
+
+                </tbody>
+              </table>
+            </div>
+      </div>
+    </div>
+<!-- End Daniel's HTML Block -->
+<!-- Begin Ron's HTML Block -->
+    <div class="col-md-6 block4">
+      <div>
+        <section class="col-md-12 centerTemp">
+          <div class="table-responsive">
+            <table class="table">
+              <tbody class="detailsTable">
+                <tr>
+                  <td class="key">Currently, it is:</td>
+                  <td class="value" id="wxDesc"></td>
+                </tr>
+                <tr>
+                  <td class="key">Humidity:</td>
+                  <td class="value" id="humidity"></td>
+                </tr>
+                <tr>
+                  <td class="key">Pressure:</td>
+                  <td class="value" id="pressure"></td>
+                </tr>
+                <tr>
+                  <td class="key">Visibility:</td>
+                  <td class="value" id="visibility"></td>
+                </tr>
+                <tr>
+                  <td class="key">Wind speed:</td>
+                  <td class="value" id="windSpeed"></td>
+                </tr>
+                <tr>
+                  <td class="key">Wind direction:</td>
+                  <td class="value" id="windDir"></td>
+                </tr>
+                <tr>
+                  <td class="key">UV index:</td>
+                  <td class="value"  id="uvIndex"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+    </div>
+<!-- End Ron's HTML Block -->
+
+
+    <script>
+      //BEGIN DW SCRIPT//
+      // wxDesc
+
+    // function add_partly_cloudy_icon(){
+    //   var src = "images/cloudy.png"
+    //   show_image("images/cloudy.png")
+    // }
+
+
+      // $("#clickMe1").focus();
+
+      function updateTable1(){
+
+      event.preventDefault();
+      var theUrl = "http://api.worldweatheronline.com/free/v2/weather.ashx?key=b5c474f461014299017e2c088f017&fx=yes&num_of_days=1&format=json&maxtempF=yes&q="
+      console.log(theUrl);
+      finalUrl = theUrl + $("#zip").val();
+      fetchData(finalUrl);
+
+      // $("clickMe1").val("").focus();
+
+
+
+      }
+      var fetchData = function(jam){
+      $.getJSON(jam, function(json){
+        //console.log(json);
+        $('#lowTemp').text(json.data.weather[0].mintempF);
+        $('#highTemp').text(json.data.weather[0].maxtempF);
+        $('#currentTemp').text(json.data.current_condition[0].temp_F);
+      }
+      )};
+      $('#submit').on('click',updateTable1);
+
+      //END DW SCRIPT//
+
+      //BEGIN RON FLOYD'S SCRIPT
+
+      //Put focus in zipcode textbox when page loads
+      $("#zip").focus();
+
+      //Caching World Weather Online link
+      var baseUrl = "http://api.worldweatheronline.com/free/v2/weather.ashx?key=b5c474f461014299017e2c088f017&q=";
+
+      //On click, concatenate zipcode to baseUrl and envoke getData()
+      $("#fansbutton").on('click', function() {
+        getdirections();
+        return false;
+      });
+      $("#submit").on("click", function() {
+        var stopText = $('#zip').val();
+        var numDays = "&num_of_days=2&tp=3&format=json";
+        var theUrl = baseUrl + stopText + numDays;
+        getData(theUrl);
+        getWeatherImage();
+
+      //Clear textbox and put focus back in
+      $("#zip").val("").focus();
+      });
+
+      function getWeatherImage(){
+
+        var wxDesc = $("#wxDesc")[0].innerText;
+
+        console.log(wxDesc);
+
+        function show_image(src) {
+          var img = document.createElement("img");
+          img.src = src;
+          document.getElementById('addimage').appendChild(img);
+        }
+
+        if(wxDesc == "partly cloudy"){
+          show_image("images/partlycloudy.png")
+        }
+
+        if(wxDesc == "cloudy"){
+          show_image("images/cloudy.png")
+        }
+
+        if(wxDesc == "sunny"){
+          show_image("images/sunny.png")
+        }
+      }
+
+      //getData takes in concatenated Url and outputs wx info
+      var getData = function(url) {
+        $.getJSON(url, function(json) {
+          var wx = json,
+              curWx = json.data.current_condition[0],
+              curAstro = json.data.weather[0],
+              humidity = curWx.humidity,
+              pressure = curWx.pressure,
+              visibility = curWx.visibility,
+              wxDesc = curWx.weatherDesc[0].value,
+              windDir = curWx.winddirDegree,
+              windSpeed = curWx.windspeedMiles,
+              uvIndex = curAstro.uvIndex;
+
+        //Weather data output
+        $('#wxDesc').text(wxDesc.toLowerCase());
+        $('#humidity').text(humidity + "%");
+        $('#pressure').text(pressure + " mb");
+        $('#visibility').text(visibility + " mi");
+        $('#windSpeed').text(windSpeed + " mph");
+        $('#windDir').html(windDir + '&deg;');
+        $('#uvIndex').text(uvIndex);
+
+        }
+
+      )}; //End of function getData
+
+      // Commit last entered zipcode to local storage.
+      var zip = document.getElementById('zip');
+      zip.value = localStorage.getItem('zip');
+      zip.addEventListener('input', function() {
+        localStorage.setItem('zip', zip.value);
+      }, false);
+      //END RON FLOYD'S SCRIPT
+      //
+      //BEGIN FAN'S SCRIPT
+      var geocoder;
+      var map;
+
+      function init() {
+        geocoder = new google.maps.Geocoder();
+        var directions;
+        var fmaddr1 = document.getElementById("fromaddress");
+        var toaddr1 = document.getElementById("toaddress");
+        var zip1 = document.getElementById("zip");
+        var options1 = {
+        types: ['(regions)'],
+        componentRestrictions: {country: "us"}
+        };
+        var autocomplete1 = new google.maps.places.Autocomplete(fmaddr1);
+        var autocomplete2 = new google.maps.places.Autocomplete(toaddr1);
+        var autocomplete3 = new google.maps.places.Autocomplete(zip1,options1);
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function (position) {
+            var coords = position.coords;
+            var Clatlng = new google.maps.LatLng(coords.latitude, coords.longitude);
+            var CmyOptions = {
+                zoom: 14,
+                center: Clatlng,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            map = new google.maps.Map(document.getElementById("mapholder"), CmyOptions);
+            var trafficLayer = new google.maps.TrafficLayer;
+
+            trafficLayer.setMap(map);
+            var Cmarker = new google.maps.Marker({
+                position: Clatlng,
+                map: map
+            });
+           var CinfoWindow = new google.maps.InfoWindow({
+           content: "CurrentPosition"
+
+           });
+           CinfoWindow.open(map, Cmarker);
+          },
+               function (error) {
+switch (error.code) {
+case 1:
+  console.log("The Current location service to be rejected");
+break;
+case 2:
+  console.log("Can't get location information");
+break;
+case 3:
+  console.log("Getting the message timeout");
+break;
+default:
+  console.log("Unknown error");
+break;
+}
+});
+} else {
+  console.log("Your browser doesn't support HTML5 to obtain location information");
+}
+//codeAddress();
+}
+
+
+    function getdirections() {
+
+        var map = new google.maps.Map(document.getElementById("mapholder"));
+        var trafficLayer = new google.maps.TrafficLayer;
+
+        trafficLayer.setMap(map);
+        var mode = google.maps.DirectionsTravelMode.DRIVING;
+        var directionsDisplay = new google.maps.DirectionsRenderer();
+        var directionsService = new google.maps.DirectionsService();
+        var directionsVisible = false;
+        directionsDisplay.setMap(null);
+        directionsDisplay.setMap(map);
+        $('#mapholder').append("<td id='directionsPanel'></td>");
+        directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+        var fmaddr = document.getElementById("fromaddress").value;
+        var toaddr = document.getElementById("toaddress").value;
+        var request = {origin: fmaddr, destination:toaddr, travelMode: mode, optimizeWaypoints: true, avoidHighways:false, avoidTolls: false};
+        directionsService.route
+        (
+                request,
+                function (response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                        directionsDisplay.setDirections(response);
+                    }
+                }
+        );
+        directionsVisible = true;
+    }
+
+
+     function codeAddress() {
+            var address = document.getElementById("zip").value;
+            geocoder.geocode({
+                'address' : address
+            }, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    map.setCenter(results[0].geometry.location);
+                    var Amarker = new google.maps.Marker({
+                        map : map,
+                        position : results[0].geometry.location,
+                        title : address,
+                        animation : google.maps.Animation.DROP
+                    });
+                    var display = " " + results[0].formatted_address;
+                    var infowindow = new google.maps.InfoWindow({
+                        content : "<span style='font-size:11px'>"
+                                 + "<br>" + display + "</span>",
+                        pixelOffset : 0,
+                        position : results[0].geometry.location
+
+                    });
+                    infowindow.open(map, Amarker);
+                    google.maps.event.addListener(Amarker, 'click', function() {
+                        infowindow.open(map, Amarker);
+                    });
+                } else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        }
+
+    </script>
+
+
+    <!-- FOOTER -->
+    <footer class="footer col-md-12">
+      <p>
+        <a href="#">Back to top</a>
+      </p>
+      <p>
+        &copy; 2015 Bucksnort, Inc.
+      </p>
+    </footer>
+    <script src="weatherdw.js"></script>
+  </body>
+</html>
