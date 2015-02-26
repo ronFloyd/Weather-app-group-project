@@ -1,13 +1,43 @@
-
-
-
-
 body {
   font-family: futura;
   background-image: url(images/columbiagorge.jpg);
   background-repeat: no-repeat;
   background-attachment: fixed;
+
 }
+
+body.onload {
+  font-family: futura;
+  background-image: url(images/columbiagorge.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+
+}
+
+.pcChange {
+  font-family: futura;
+  background-image: url(images/partlycloudy.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
+}
+
+.sChange {
+  font-family: futura;
+  background-image: url(images/sunny.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  }
+
+  .oChange {
+  font-family: futura;
+  background-image: url(images/overcast.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+ }
+
+
 
 .current {
   font-family: futura;
@@ -20,6 +50,7 @@ body {
   vertical-align:bottom;
   text-align:center;
   height: 350px;
+  opacity: .9;
 
 
 }
@@ -39,6 +70,7 @@ body {
   padding-top: 20px;
   padding-right: 0px;
   text-align: center;
+  opacity: .9;
 }
 
 .minTemp {
@@ -103,7 +135,7 @@ body {
 .featurette-image {
   border-radius: 50%;
   border: 2px solid white;
-  margin-left: 100px;
+  margin-left: 20%;
 }
 
 .key {
@@ -145,7 +177,7 @@ body {
   background-color: rgba(238, 238, 238, 0.5);
 }
 
-  #frmholder {
+#frmholder {
         width: 800px;
         border: 1px solid #000;
         border-bottom: 0;
@@ -154,7 +186,7 @@ body {
     }
     #mapholder {
         position:absolute;
-        width: 500px;
+        width: 660px;
         height: 450px;
         border: 1px solid #000;
         background: #fff;

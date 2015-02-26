@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <title>BS Weather</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <style type="text/css">
+      .list-group-item {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 18px;
+        color: blue;
+        font-weight: bold;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+        <h3>Enter zip code:</h3>
+        <input type="text" id="zip" placeholder="Zipcode..." />
+        <button id="submit" class="btn btn-sm btn-info">Submit</button>
+
+        </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <ul class="list-group">
+            <li class="list-group-item" id="humidity"></li>
+            <li class="list-group-item" id="pressure"></li>
+            <li class="list-group-item" id="visibility"></li>
+            <li class="list-group-item" id="wxDesc"></li>
+            <li class="list-group-item" id="windSpeed"></li>
+            <li class="list-group-item" id="windDir"></li>
+            <li class="list-group-item" id="uvIndex"></li>
+          </ul>
+        </div><!-- /.col-sm-4 -->
+
+        <!-- Framework for BS Details display -->
+        <!-- <section id="humidity"></section>
+        <section id="pressure"></section>
+        <section id="visibility"></section>
+        <section id="wxDesc"></section>
+        <section id="windSpeed"></section>
+        <section id="windDir"></section>
+        <section id="uvIndex"></section>
+      </div> -->
+
+    <script>
+
+      $("#zip").focus();
+
+      //Caching World Weather Online link
+      var baseUrl = "http://api.worldweatheronline.com/free/v2/weather.ashx?key=b5c474f461014299017e2c088f017&q=";
+
+      //On click, concatenate stopId to baseUrl and envoke callShit()
+      $("#submit").on("click", function() {
+        var stopText = $('#zip').val();
+        var numDaysAndCrap = "&num_of_days=2&tp=3&format=json";
+        var theUrl = baseUrl + stopText + numDaysAndCrap;
+        callShit(theUrl);
+      // $("#zip").val("").focus();
+      });
+
+
+
+      //callShit takes in concatenated Url and outputs wx info
+      var callShit = function(url) {
+        $.getJSON(url, function(json) {
+
+          var wx = json,
+              curWx = json.data.current_condition[0],
+              curAstro = json.data.weather[0],
+              humidity = curWx.humidity,
+              pressure = curWx.pressure,
+              visibility = curWx.visibility,
+              wxDesc = curWx.weatherDesc[0].value,
+              windDir = curWx.winddirDegree,
+              windSpeed = curWx.windspeedMiles,
+              uvIndex = curAstro.uvIndex;
+
+          console.log(wx);
+
+          //Weather data output
+          $('#humidity').text('Humidity: ' + humidity + "%");
+          $('#pressure').text('Pressure: ' + pressure + " millibars");
+          $('#visibility').text('Visibility: ' + visibility + " miles");
+          $('#wxDesc').text('It is ' + wxDesc.toLowerCase() + " right now.");
+          $('#windSpeed').text('Wind speed: ' + windSpeed + " mph");
+          $('#windDir').html('Wind direction: ' + windDir + '&deg;');
+          $('#uvIndex').text('UV Index: ' + uvIndex);
+        }
+      )}; //End of function callShit
+
+      // Commit last entered zipcode to local storage.
+        var zip = document.getElementById('zip');
+        zip.value = localStorage.getItem('zip');
+        zip.addEventListener('input', function() {
+          localStorage.setItem('zip', zip.value);
+        }, false);
+
+    </script>
+  </body>
+</html>
